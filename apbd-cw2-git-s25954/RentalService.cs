@@ -2,6 +2,8 @@
 
 public class RentalService
 {
+    public List<Rental> Rentals {get;set;}
+    
     public void CreateRental(User user, Equipment equipment, int days)
     {
 
@@ -25,6 +27,8 @@ public class RentalService
 
         equipment.isAvailable = false;
         user.RentedEquipment.Add(equipment);
+        
+        Rentals.Add(newRental);
     }
 
     public void ReturnRental(Rental rental)
@@ -36,10 +40,32 @@ public class RentalService
         if (rental.DueDate < rental.ReturnDate)
         {
             Console.WriteLine("Late Rental return. Adding fee");
-            rental.Fee = 100;
+            
+            int difference = now.DayNumber - rental.ReturnDate.DayNumber;
+            
+            rental.Fee = 100 * difference;
         }
         
         rental.Renter.RentedEquipment.Remove(rental.RentedEquipment);
         rental.RentedEquipment.isAvailable = true;
+    }
+
+    public void ActiveRentalsByUser(User user)
+    {
+        foreach (Equipment equipment in user.RentedEquipment)
+        {
+            Console.WriteLine(equipment.name + "; " + equipment.description);
+        }
+    }
+
+    public void ShowOverdueRentals()
+    {
+        foreach (Rental rental in Rentals)
+        {
+            if (rental.ReturnDate > rental.DueDate)
+            {
+                Console.WriteLine(rental.RentedEquipment.name + "; " + rental.Renter + "; " + rental.RentalDate + "; " + rental.ReturnDate + ";");
+            }
+        }
     }
 }
