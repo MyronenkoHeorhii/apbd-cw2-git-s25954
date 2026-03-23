@@ -10,11 +10,10 @@ public class Rental
     public User Renter { get; set; }
     public Equipment RentedEquipment { get; set; }
 
-    public Rental(DateOnly rentalDate, DateOnly dueDate, int fee)
+    public Rental(DateOnly rentalDate, DateOnly dueDate)
     {
         this.RentalDate = rentalDate;
         this.DueDate = dueDate;
-        this.Fee = fee;
     }
     
 }
