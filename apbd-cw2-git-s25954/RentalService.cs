@@ -43,7 +43,7 @@ public class RentalService
             
             int difference = now.DayNumber - rental.ReturnDate.DayNumber;
             
-            rental.Fee = 100 * difference;
+            rental.Fee = Rental.Penalty * difference;
         }
         
         rental.Renter.RentedEquipment.Remove(rental.RentedEquipment);

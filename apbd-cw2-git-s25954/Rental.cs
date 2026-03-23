@@ -2,6 +2,10 @@
 
 public class Rental
 {
+    private static int _Penalty = 100;
+    
+    public static int Penalty{get{return _Penalty;} set{_Penalty = value;}}
+    
     public DateOnly RentalDate { get; set; }
     public DateOnly DueDate { get; set; }
     public DateOnly ReturnDate { get; set; }
