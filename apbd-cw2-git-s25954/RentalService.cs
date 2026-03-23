@@ -26,4 +26,20 @@ public class RentalService
         equipment.isAvailable = false;
         user.RentedEquipment.Add(equipment);
     }
+
+    public void ReturnRental(Rental rental)
+    {
+        DateOnly now = DateOnly.FromDateTime(DateTime.Now);
+        
+        rental.ReturnDate = now;
+
+        if (rental.DueDate < rental.ReturnDate)
+        {
+            Console.WriteLine("Late Rental return. Adding fee");
+            rental.Fee = 100;
+        }
+        
+        rental.Renter.RentedEquipment.Remove(rental.RentedEquipment);
+        rental.RentedEquipment.isAvailable = true;
+    }
 }
