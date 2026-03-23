@@ -7,11 +7,9 @@ public class Laptop : Equipment
     public int ram { get; set; }
 
 
-    public Laptop(string name, string description)
+    public Laptop(string name, string description, string operatingSystem, int ram) : base(name, description)
     {
-        this.name = name;
-        this.isAvailable = true;
-        this.description = description;
-        
+        this.operatingSystem = operatingSystem;
+        this.ram = ram;
     }
 }

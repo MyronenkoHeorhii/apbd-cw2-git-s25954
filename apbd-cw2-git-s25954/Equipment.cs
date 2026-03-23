@@ -9,8 +9,11 @@ public class Equipment
     public bool isAvailable {get;set;}
     public string description {get;set;}
 
-    protected Equipment()
+    protected Equipment(string name, string description)
     {
         this.id = idCount++;
+        this.name = name;
+        this.description = description;
+        this.isAvailable = true;
     }
 }

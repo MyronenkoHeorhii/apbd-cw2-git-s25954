@@ -2,9 +2,9 @@
 
 public class RentalService
 {
-    public List<Rental> Rentals {get;set;}
+    public static List<Rental> Rentals { get; set; } = new List<Rental>();
     
-    public void CreateRental(User user, Equipment equipment, int days)
+    public static void CreateRental(User user, Equipment equipment, int days)
     {
 
         if (!equipment.isAvailable)
@@ -31,26 +31,41 @@ public class RentalService
         Rentals.Add(newRental);
     }
 
-    public void ReturnRental(Rental rental)
+    public static void ReturnRental(User user, Equipment equipment)
     {
+        Rental rental = null;
+
+        foreach (Rental r in Rentals)
+        {
+            if (r.Renter == user && r.RentedEquipment == equipment)
+            {
+                rental = r;
+            }
+        }
+
+        if (rental == null)
+        {
+            throw new Exception("Rental not found");
+        }
+
         DateOnly now = DateOnly.FromDateTime(DateTime.Now);
         
         rental.ReturnDate = now;
 
         if (rental.DueDate < rental.ReturnDate)
         {
-            Console.WriteLine("Late Rental return. Adding fee");
-            
-            int difference = now.DayNumber - rental.ReturnDate.DayNumber;
+            int difference = rental.ReturnDate.DayNumber - rental.DueDate.DayNumber;
             
             rental.Fee = Rental.Penalty * difference;
+            
+            Console.WriteLine("Late Rental return. Adding fee of " + rental.Fee);
         }
         
         rental.Renter.RentedEquipment.Remove(rental.RentedEquipment);
         rental.RentedEquipment.isAvailable = true;
     }
 
-    public void ActiveRentalsByUser(User user)
+    public static void ActiveRentalsByUser(User user)
     {
         foreach (Equipment equipment in user.RentedEquipment)
         {
@@ -58,13 +73,13 @@ public class RentalService
         }
     }
 
-    public void ShowOverdueRentals()
+    public static void ShowOverdueRentals()
     {
         foreach (Rental rental in Rentals)
         {
-            if (rental.ReturnDate > rental.DueDate)
+            if (rental.ReturnDate.DayNumber > rental.DueDate.DayNumber)
             {
-                Console.WriteLine(rental.RentedEquipment.name + "; " + rental.Renter + "; " + rental.RentalDate + "; " + rental.ReturnDate + ";");
+                Console.WriteLine(rental.RentedEquipment.name + "; " + rental.Renter.FirstName + " " + rental.Renter.LastName + "; " + rental.RentalDate + "; " + rental.ReturnDate + ";");
             }
         }
     }

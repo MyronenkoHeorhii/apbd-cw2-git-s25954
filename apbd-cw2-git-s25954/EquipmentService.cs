@@ -2,9 +2,9 @@
 
 public class EquipmentService
 {
-    public List<Equipment> Equipment { get; set; }
+    public static List<Equipment> Equipment { get; set; } = new List<Equipment>();
 
-    public void AddEquipment(Equipment equipment)
+    public static void AddEquipment(Equipment equipment)
     {
         Equipment.Add(equipment);
     }
@@ -17,7 +17,7 @@ public class EquipmentService
         }
     }
     
-    public void GetAvailableEquipment()
+    public static void GetAvailableEquipment()
     {
         foreach (Equipment equipment in Equipment)
         {
@@ -28,11 +28,68 @@ public class EquipmentService
         }
     }
 
-    public void MarkAsUnavailable(Equipment equipment)
+    public static void MarkAsUnavailable(Equipment equipment)
     {
         equipment.isAvailable = false;
         Console.WriteLine("Unavailable: " + equipment.name);
     }
-    
-    
+
+    public static void Report()
+    {
+        int totalEquipment = Equipment.Count;
+        int availableEquipment = 0;
+        int unavailableEquipment = 0;
+        int laptopCount = 0;
+        int cameraCount = 0;
+        int projectorCount = 0;
+
+        foreach (Equipment equipment in Equipment)
+        {
+            if (equipment.isAvailable)
+            {
+                availableEquipment++;
+            }
+        }
+        
+        foreach (Equipment equipment in Equipment)
+        {
+            if (!equipment.isAvailable)
+            {
+                unavailableEquipment++;
+            }
+        }
+
+        foreach (Equipment equipment in Equipment)
+        {
+            if (equipment.GetType() == typeof(Laptop))
+            {
+                laptopCount++;
+            }
+        }
+        
+        foreach (Equipment equipment in Equipment)
+        {
+            if (equipment.GetType() == typeof(Camera))
+            {
+                cameraCount++;
+            }
+        }
+
+        foreach (Equipment equipment in Equipment)
+        {
+            if (equipment.GetType() == typeof(Projector))
+            {
+                projectorCount++;
+            }
+        }
+        
+        Console.WriteLine("Total equipment: " + totalEquipment);
+        Console.WriteLine("Available equipment: " + availableEquipment);
+        Console.WriteLine("Unavailable equipment: " + unavailableEquipment);
+        Console.WriteLine("Laptop count: " + laptopCount);
+        Console.WriteLine("Camera count: " + cameraCount);
+        Console.WriteLine("Projector count: " + projectorCount);
+    }
+
+
 }

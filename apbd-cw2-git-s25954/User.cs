@@ -10,9 +10,12 @@ public class User
     public List<Equipment> RentedEquipment { get; set; }
     public virtual int maxRentals { get; set; }
 
-    public User()
+    public User(string firstName, string lastName)
     {
         this.Id = IdCounter++;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.RentedEquipment = new List<Equipment>();
     }
 
     public virtual string GetUserType()
